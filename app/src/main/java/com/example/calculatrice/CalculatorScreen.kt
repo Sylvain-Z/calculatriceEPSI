@@ -15,11 +15,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.background
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
+
 
 import java.util.Stack
 
@@ -121,33 +123,33 @@ fun CalculatorScreen() {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                CustomButtonSimple("(", onClick = { onButtonClick("(") })
-                CustomButtonSimple(")", onClick = { onButtonClick(")") })
+                CustomButton("(", onClick = { onButtonClick("(") })
+                CustomButton(")", onClick = { onButtonClick(")") })
                 CustomButtonErase("⌫", onClick = { onBackspaceClick() })
                 CustomButtonErase("C", onClick = { onClearClick() })
             }
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                CustomButtonSimple("7", onClick = { onButtonClick("7") })
-                CustomButtonSimple("8", onClick = { onButtonClick("8") })
-                CustomButtonSimple("9", onClick = { onButtonClick("9") })
+                CustomButton("7", onClick = { onButtonClick("7") })
+                CustomButton("8", onClick = { onButtonClick("8") })
+                CustomButton("9", onClick = { onButtonClick("9") })
                 CustomButtonOperators("÷", onClick = { onButtonClick("/") })
             }
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                CustomButtonSimple("4", onClick = { onButtonClick("4") })
-                CustomButtonSimple("5", onClick = { onButtonClick("5") })
-                CustomButtonSimple("6", onClick = { onButtonClick("6") })
+                CustomButton("4", onClick = { onButtonClick("4") })
+                CustomButton("5", onClick = { onButtonClick("5") })
+                CustomButton("6", onClick = { onButtonClick("6") })
                 CustomButtonOperators("x", onClick = { onButtonClick("*") })
             }
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                CustomButtonSimple("1", onClick = { onButtonClick("1") })
-                CustomButtonSimple("2", onClick = { onButtonClick("2") })
-                CustomButtonSimple("3", onClick = { onButtonClick("3") })
+                CustomButton("1", onClick = { onButtonClick("1") })
+                CustomButton("2", onClick = { onButtonClick("2") })
+                CustomButton("3", onClick = { onButtonClick("3") })
                 CustomButtonOperators("-", onClick = { onButtonClick("-") })
             }
             Row(
@@ -155,7 +157,7 @@ fun CalculatorScreen() {
             ) {
 
                 CustomButtonDouble("0", onClick = { onButtonClick("0") })
-                CustomButtonSimple(".", onClick = { onDecimalClick() })
+                CustomButton(".", onClick = { onDecimalClick() })
                 CustomButtonOperators("+", onClick = { onButtonClick("+") })
             }
             Row(
@@ -166,53 +168,52 @@ fun CalculatorScreen() {
         }
     }
 }
+// Création du style du bouton de base
 @Composable
-fun CustomButtonSimple(
+fun CustomButton(
     text: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    width: Dp = 60.dp,
+    height: Dp = 60.dp,
+    containerColor: Color = Color(186 / 255f, 201 / 255f, 195 / 255f),
+    contentColor: Color = Color.White,
+    fontSize: TextUnit = 20.sp,
+    fontWeight: FontWeight? = null,
 ) {
     Button(
         onClick = onClick,
         modifier = modifier
-            .width(60.dp)
-            .height(60.dp),
+            .width(width)
+            .height(height),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color(186 / 255f, 201 / 255f, 195 / 255f),
-            contentColor = Color.White
+            containerColor = containerColor,
+            contentColor = contentColor
         ),
-        shape = RectangleShape // Assure que le bouton garde une forme rectangulaire
+        shape = RectangleShape
     ) {
         Text(
             text = text,
-            fontSize = 20.sp
+            fontSize = fontSize,
+            fontWeight = fontWeight,
+            color = contentColor
         )
     }
 }
+
+// Ajout des particularités
 @Composable
 fun CustomButtonDouble(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Button(
+    CustomButton(
+        text = text,
         onClick = onClick,
-        modifier = modifier
-            .width(136.dp)
-            .height(60.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color(186 / 255f, 201 / 255f, 195 / 255f),
-            contentColor = Color.White
-        ),
-        shape = RectangleShape
-    ) {
-        Text(
-            text = text,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            style = TextStyle(color = Color.White)
-        )
-    }
+        modifier = modifier,
+        width = 136.dp,
+    )
 }
 @Composable
 fun CustomButtonOperators(
@@ -220,22 +221,12 @@ fun CustomButtonOperators(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Button(
+    CustomButton(
+        text = text,
         onClick = onClick,
-        modifier = modifier
-            .width(60.dp)
-            .height(60.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color(74 / 255f, 78 / 255f, 76 / 255f),
-            contentColor = Color.White
-        ),
-        shape = RectangleShape
-    ) {
-        Text(
-            text = text,
-            fontSize = 20.sp
-        )
-    }
+        modifier = modifier,
+        containerColor = Color(74 / 255f, 78 / 255f, 76 / 255f)
+    )
 }
 @Composable
 fun CustomButtonEqual(
@@ -243,22 +234,13 @@ fun CustomButtonEqual(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Button(
+    CustomButton(
+        text = text,
         onClick = onClick,
-        modifier = modifier
-            .width(288.dp)
-            .height(60.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color(26 / 255f, 146 / 255f, 0 / 255f),
-            contentColor = Color.White
-        ),
-        shape = RectangleShape
-    ) {
-        Text(
-            text = text,
-            fontSize = 20.sp
-        )
-    }
+        modifier = modifier,
+        width = 288.dp,
+        containerColor = Color(26 / 255f, 146 / 255f, 0 / 255f)
+    )
 }
 @Composable
 fun CustomButtonErase(
@@ -266,26 +248,14 @@ fun CustomButtonErase(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Button(
+    CustomButton(
+        text = text,
         onClick = onClick,
-        modifier = modifier
-            .width(60.dp)
-            .height(60.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color(135 / 255f, 145 / 255f, 141 / 255f),
-            contentColor = Color.White
-        ),
-        shape = RectangleShape
-    ) {
-        Text(
-            text = text,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            style = TextStyle(color = Color.White)
-        )
-    }
+        modifier = modifier,
+        containerColor = Color(135 / 255f, 145 / 255f, 141 / 255f),
+    )
 }
-
+// Fonction pour le calcul
 @SuppressLint("DefaultLocale")
 fun evaluateExpression(expression: String): String {
     val tokens = expression.replace("÷", "/").toCharArray()
