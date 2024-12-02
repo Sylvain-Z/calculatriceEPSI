@@ -41,7 +41,7 @@ fun CalculatorScreen() {
         try {
             val result = evaluateExpression(display.value)
             display.value = result
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             display.value = "Erreur"
         }
     }
@@ -112,9 +112,7 @@ fun CalculatorScreen() {
                 modifier = Modifier.align(Alignment.CenterEnd)
             )
         }
-
         Spacer(modifier = Modifier.height(8.dp))
-
         // Les boutons de la calculatrice
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
